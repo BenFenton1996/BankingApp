@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div class="center-div login-form">
+    <div class="center-div">
         <h3>Log In to SMP</h3>
 
         <hr />
@@ -33,10 +33,10 @@
             <div class="form-group">
                 <label for="Password">Password: </label>
                 @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
-                <small class="form-text text-muted">Your password is hashed for security.</small>
+                <small class="form-text text-muted">Your will keep your password safe.</small>
             </div>
 
-            <input class="btn btn-primary form" type="submit" value="Log In" />
+            <input class="btn btn-primary center-horizontal" type="submit" value="Log In" />
         </form>
 
         @if (!ViewData.ModelState.IsValid)

@@ -13,7 +13,7 @@ namespace SocialMediaProject.Entities.Services
         List<User> GetAllUsers();
 
         /// <summary>
-        /// Checks the Users table and returns the row with a matching Username and Password
+        /// Checks the Users table and returns the row with a matching Email and Password
         /// </summary>
         /// <param name="Email">The Email to check against the Email column in the Users table</param>
         /// <param name="Password">The Password to check against the Password column in the Users table</param>

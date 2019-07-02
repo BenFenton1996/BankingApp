@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SocialMediaProject.Entities.Models
 {
+    [Table("Users")]
     public class User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

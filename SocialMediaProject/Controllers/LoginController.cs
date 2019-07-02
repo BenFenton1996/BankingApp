@@ -22,8 +22,13 @@ namespace SocialMediaProject
 
         [AllowAnonymous]
         [HttpGet]
-        public ViewResult LoginStageOne()
+        public ActionResult LoginStageOne()
         {
+            //If user is already logged in then redirect them to the Timeline page
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Timeline", new { Area = "Home" });
+            }
             return View();
         }
 
