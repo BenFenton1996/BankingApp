@@ -37,7 +37,7 @@ namespace SocialMediaProject.Entities.Services
         public User CheckUserDetails(string Email, string Password)
         {
             return context.Users
-                .FirstOrDefault(u => u.Email == Email && u.Password == Utilities.SMPHash.HashString(Password));
+                .FirstOrDefault(u => u.Email == Email && u.Password.SequenceEqual(Utilities.SMPHash.HashText(Password, u.Salt)));
         }
     }
 }

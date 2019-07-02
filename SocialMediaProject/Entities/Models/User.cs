@@ -12,13 +12,16 @@ namespace SocialMediaProject.Entities.Models
         [MaxLength(255)]
         public string Username { get; set; }
 
-        [MaxLength(255)]
-        public string Password { get; set; }
+        [MaxLength(32)]
+        public byte[] Password { get; set; }
 
         [MaxLength(255)]
         public string Email { get; set; }
 
         [MaxLength(255)]
         public string Role { get; set; }
+
+        [MaxLength(32)]
+        public byte[] Salt { get; set; }
     }
 }

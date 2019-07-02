@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocialMediaProject.Entities;
 using SocialMediaProject.Entities.Services;
+using SocialMediaProject.Utilities;
 
 namespace SocialMediaProject
 {
@@ -46,6 +47,8 @@ namespace SocialMediaProject
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<ISMPContext, SMPContext>();
             services.AddScoped<IUsersService, UsersService>();
         }
 

@@ -1,30 +1,38 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace SocialMediaProject.Utilities
 {
     public static class SMPHash
     {
         /// <summary>
-        /// Hashes a string and returns the result as a string
+        /// Hashes a string using HMACSHA1 with 10,000 iterations and returns the resulting 256-bit byte array
         /// </summary>
         /// <param name="plainText">The string to hash</param>
+        /// <param name="salt">The salt to use when hashing</param>
         /// <returns>The result of hashing the plainText string</returns>
-        public static string HashString(string plainText)
+        public static byte[] HashText(string plainText, byte[] salt)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            return KeyDerivation.Pbkdf2(
+                password: plainText,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 32);
+        }
 
-            using (var algorithm = SHA256.Create())
+        /// <summary>
+        /// Generates a 128-bit salt using a cryptographically secure PRNG (Psuedorandom Number Generator)
+        /// </summary>
+        /// <returns>A byte array containing a salt for use when hashing</returns>
+        public static byte[] GenerateSalt()
+        {
+            byte[] salt = new byte[16];
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                Encoding encoding = Encoding.UTF8;
-                Byte[] result = algorithm.ComputeHash(encoding.GetBytes(plainText));
-
-                foreach (Byte b in result)
-                    stringBuilder.Append(b.ToString("x2"));
+                rng.GetBytes(salt);
+                return salt;
             }
-
-            return stringBuilder.ToString();
         }
     }
 }

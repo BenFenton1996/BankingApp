@@ -17,16 +17,23 @@ namespace SocialMediaProject.Data
             }
 
             //Seed the table with some test values
-            context.Users.Add(new User {
+            var salt = Utilities.SMPHash.GenerateSalt();
+            context.Users.Add(new User
+            {
                 Username = "Admin",
-                Password = "fbf826d62fd43f0643e283c27040e2f235ddd68908b0c286c77a456b465ace13",
                 Email = "Admin@SMP.com",
+                Password = Utilities.SMPHash.HashText("SuperPassword", salt),
+                Salt = salt,
                 Role = "Administrator"
             });
-            context.Users.Add(new User {
+
+            salt = Utilities.SMPHash.GenerateSalt();
+            context.Users.Add(new User
+            {
                 Username = "Test",
-                Password = "e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23bd38ec221a",
                 Email = "Test@SMP.com",
+                Password = Utilities.SMPHash.HashText("Password", salt),
+                Salt = salt,
                 Role = "User"
             });
 
