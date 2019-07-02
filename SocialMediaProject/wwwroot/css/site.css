@@ -61,3 +61,12 @@ body {
     line-height: 60px; /* Vertically center the text there */
     background-color: white;
 }
+
+/* Fixes page snapping to the right when opening a modal */
+/*.modal {
+    overflow-y: auto;
+}
+
+.modal-open {
+    overflow: auto;
+}*/
