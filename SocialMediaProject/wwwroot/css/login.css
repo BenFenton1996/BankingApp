@@ -1,0 +1,17 @@
+﻿/* Login Menu
+-------------------------------------------------- */
+.login-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    min-width: 200px;
+    width: 20%;
+    height: 50%;
+}
+
+    .login-container h1, h2, h3, h4 {
+        text-align: center;
+    }

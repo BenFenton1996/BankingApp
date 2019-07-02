@@ -12,5 +12,7 @@ namespace SocialMediaProject.Models
         [DataType(DataType.Password)]
         [MaxLength(255)]
         public string Password { get; set; }
+
+        public bool AccountCreated { get; set; }
     }
 }

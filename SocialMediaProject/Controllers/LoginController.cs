@@ -20,6 +20,10 @@ namespace SocialMediaProject
             this.UsersService = UsersService;
         }
 
+        /// <summary>
+        /// The View containing the LoginStageOne form with a modal for signing up with a new account
+        /// </summary>
+        /// <returns>The View containing the Login form</returns>
         [AllowAnonymous]
         [HttpGet]
         public ActionResult LoginStageOne()
@@ -29,9 +33,14 @@ namespace SocialMediaProject
             {
                 return RedirectToAction("Index", "Timeline", new { Area = "Home" });
             }
-            return View();
+            return View(new LoginStageOneViewModel());
         }
 
+        /// <summary>
+        /// Recieves User details, validates them and logs the user in with those details if successful
+        /// </summary>
+        /// <param name="viewModel">The viewModel containing the user details to validate</param>
+        /// <returns>Redirects to the Timeline View in the Home Area if successful, otherwise returns the LoginStageOne View</returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> LoginStageOne(LoginStageOneViewModel viewModel)
@@ -64,9 +73,44 @@ namespace SocialMediaProject
                 }
             }
 
-            return View();
+            return View(new LoginStageOneViewModel());
         }
 
+        /// <summary>
+        /// Recieves User details for a new account and passes them to a service which 
+        /// checks them to make sure they don't match the details of an existing account. 
+        /// If they don't, create a new account.
+        /// </summary>
+        /// <param name="viewModel">The viewModel containing the User details for a new account</param>
+        /// <returns>The LoginStageOne View</returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ViewResult SignUp(SignUpViewModel viewModel)
+        {
+            bool accountCreated = false;
+            if (ModelState.IsValid)
+            {
+                if (!UsersService.CreateNewAccount(viewModel.NewUsername, viewModel.NewEmail, viewModel.NewPassword))
+                {
+                    ModelState.AddModelError("AccountAlreadyExists", "Email or Username already in use.");
+                }
+                else
+                {
+                    ModelState.Clear();
+                    accountCreated = true;
+                }
+            }
+
+            return View("LoginStageOne", new LoginStageOneViewModel
+            {
+                AccountCreated = accountCreated
+            });
+        }
+
+        /// <summary>
+        /// Logs the user out
+        /// </summary>
+        /// <returns>The LoginStageOne View</returns>
         [Authorize]
         [HttpGet]
         public RedirectToActionResult Logout()

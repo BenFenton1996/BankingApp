@@ -19,6 +19,8 @@ namespace SocialMediaProject.Entities.Services
         /// <param name="Password">The Password to check against the Password column in the Users table</param>
         /// <returns>The row in Users with matching details</returns>
         User CheckUserDetails(string Email, string Password);
+
+        bool CreateNewAccount(string Username, string Email, string Password);
     }
 
     public class UsersService : IUsersService
@@ -38,6 +40,28 @@ namespace SocialMediaProject.Entities.Services
         {
             return context.Users
                 .FirstOrDefault(u => u.Email == Email && u.Password.SequenceEqual(Utilities.SMPHash.HashText(Password, u.Salt)));
+        }
+
+        public bool CreateNewAccount(string Username, string Email, string Password)
+        {
+            if (!context.Users.Where(u => u.Username == Username || u.Email == Email).Any())
+            {
+                byte[] salt = Utilities.SMPHash.GenerateSalt();
+                context.Users.Add(new User
+                {
+                    Username = Username,
+                    Email = Email,
+                    Password = Utilities.SMPHash.HashText(Password, salt),
+                    Salt = salt,
+                    Role = "User"
+                });
+                context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

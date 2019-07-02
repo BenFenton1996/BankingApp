@@ -1,7 +1,7 @@
 ﻿@model SocialMediaProject.Models.LoginStageOneViewModel
 
 @{
-    ViewData["Title"] = "LoginStageOne";
+    ViewData["Title"] = "Login Stage One";
     Layout = null;
 }
 
@@ -12,41 +12,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
 </head>
 
 <body>
-    <div class="center-div">
-        <h3>Log In to SMP</h3>
+    <!-- Renders the modal containing the form allowing users to create new accounts -->
+    @{
+        await Html.RenderPartialAsync("SignUpModal", new SocialMediaProject.Models.SignUpViewModel());
+    }
 
+    <div class="login-container">
+        <h3>Log In to SMP</h3>
         <hr />
 
-        <form method="post">
+        <form action="@Url.Action("LoginStageOne", "Login")" method="post">
             @Html.AntiForgeryToken()
 
             <div class="form-group">
                 <label for="Email">Email: </label>
                 @Html.EditorFor(Model => Model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
-                <small class="form-text text-muted">We will never share your email.</small>
             </div>
             <div class="form-group">
                 <label for="Password">Password: </label>
                 @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
-                <small class="form-text text-muted">Your will keep your password safe.</small>
             </div>
 
-            <input class="btn btn-primary center-horizontal" type="submit" value="Log In" />
+            <div class="btn-toolbar justify-content-center">
+                <input class="btn btn-primary" type="submit" value="Log In" />
+                <input class="btn btn-dark ml-2" type="button" data-toggle="modal" data-target="#signUpModal" value="Sign Up" />
+            </div>
         </form>
 
-        @if (!ViewData.ModelState.IsValid)
+        @if (Model.AccountCreated)
         {
             <hr />
-
-            <div class="validation-messages">
-                <label>@Html.ValidationMessageFor(Model => Model.Email)</label>
-                <label>@Html.ValidationMessageFor(Model => Model.Password)</label>
-                <label>@Html.ValidationMessage("Incorrect")</label>
+            <p class="text-success text-center">Account Successfully Created</p>
+        }
+        else if (!ViewData.ModelState.IsValid)
+        {
+            <hr />
+            <div class="text-center">
+                @foreach (var key in ViewData.ModelState.Keys)
+                {
+                    <p class="text-danger">@Html.ValidationMessage(key)</p>
+                }
             </div>
         }
     </div>

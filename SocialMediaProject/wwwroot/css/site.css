@@ -1,40 +1,6 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-/* Warnings
--------------------------------------------------- */
-.validation-messages {
-    text-align: center;
-}
-
-    .validation-messages label {
-        color: red;
-        display: block;
-    }
-
-/* Positioning
--------------------------------------------------- */
-.center-div {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    min-width: 200px;
-    width: 20%;
-    height: 50%;
-}
-
-    .center-div h1, h2, h3, h4 {
-        text-align: center;
-    }
-
-.center-horizontal{
-    margin: auto;
-    display: block;
-}
-
 /* Navbar styles
 -------------------------------------------------- */
 a.navbar-brand {
