@@ -20,6 +20,13 @@ namespace SocialMediaProject.Entities.Services
         /// <returns>The row in Users with matching details</returns>
         User CheckUserDetails(string Email, string Password);
 
+        /// <summary>
+        /// Adds a new row to the Users table if it doesn't already exist
+        /// </summary>
+        /// <param name="Username">The Username of the new account</param>
+        /// <param name="Email">The Email of the new account</param>
+        /// <param name="Password">The plaintext of the new account</param>
+        /// <returns>True if the account was created, false if the account already exists</returns>
         bool CreateNewAccount(string Username, string Email, string Password);
     }
 
