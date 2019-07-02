@@ -25,42 +25,48 @@
     }
 
     <div class="login-container">
-        <h3>Log In to SMP</h3>
-        <hr />
+        <div class="text-center login-title">
+            <h1>Social Media Project</h1>
+        </div>
 
-        <form action="@Url.Action("LoginStageOne", "Login")" method="post">
-            @Html.AntiForgeryToken()
+        <div class="login-form">
+            <form action="@Url.Action("LoginStageOne", "Login")" method="post">
+                @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <label for="Email">Email: </label>
-                @Html.EditorFor(Model => Model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
-            </div>
-            <div class="form-group">
-                <label for="Password">Password: </label>
-                @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
-            </div>
+                <div class="form-group">
+                    @Html.EditorFor(Model => Model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                </div>
 
-            <div class="btn-toolbar justify-content-center">
-                <input class="btn btn-primary" type="submit" value="Log In" />
-                <input class="btn btn-dark ml-2" type="button" data-toggle="modal" data-target="#signUpModal" value="Sign Up" />
-            </div>
-        </form>
+                <div class="btn-toolbar justify-content-center">
+                    <input class="btn btn-primary login-submit-btn" type="submit" value="Log-In" />
+                </div>
 
-        @if (Model.AccountCreated)
-        {
-            <hr />
-            <p class="text-success text-center">Account Successfully Created</p>
-        }
-        else if (!ViewData.ModelState.IsValid)
-        {
-            <hr />
-            <div class="text-center">
-                @foreach (var key in ViewData.ModelState.Keys)
+                <div class="btn-toolbar justify-content-center mt-2">
+                    <a href="" data-toggle="modal" data-target="#signUpModal">Need an account?</a>
+                </div>
+            </form>
+
+            <div class="text-center mt-3">
+                @if (Model.AccountCreated)
                 {
-                    <p class="text-danger">@Html.ValidationMessage(key)</p>
+                    <hr />
+                    <label class="text-success">Account Successfully Created</label>
+                }
+                else if (!ViewData.ModelState.IsValid)
+                {
+                    <hr />
+                    <div class="text-center">
+                        @foreach (var key in ViewData.ModelState.Keys)
+                        {
+                            <label class="text-danger">@Html.ValidationMessage(key)</label>
+                        }
+                    </div>
                 }
             </div>
-        }
+        </div>
     </div>
 
     <!-- Renders the footer -->

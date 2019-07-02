@@ -1,17 +1,51 @@
 ﻿/* Login Menu
 -------------------------------------------------- */
+
 .login-container {
+    display: block;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
-    min-width: 200px;
-    width: 20%;
+    min-width: 300px;
+    width: 15%;
     height: 50%;
 }
 
-    .login-container h1, h2, h3, h4 {
+.login-form {
+    background-color: white;
+    display: block;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+    border-color: #f2f2f2;
+    padding: 25px;
+}
+
+    .login-form h1, h2, h3, h4 {
         text-align: center;
     }
+
+.login-title {
+    color: white;
+}
+
+.login-submit-btn {
+    width: 50%;
+    min-width: 150px;
+}
+
+/*Responsive UI*/
+@media only screen and (max-width: 1850px) {
+    h1 {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    h1 {
+        font-size: 25px;
+    }
+}
