@@ -30,8 +30,13 @@ namespace SocialMediaProject
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Uses connection string for working at work
+            //services.AddDbContextPool<SMPDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("WorkConnection")));
+
+            //Uses connection string for working at home
             services.AddDbContextPool<SMPDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("HomeConnection")));
 
             services.ConfigureApplicationCookie(options =>
             {
