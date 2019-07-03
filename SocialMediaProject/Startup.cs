@@ -31,12 +31,12 @@ namespace SocialMediaProject
             });
 
             //Uses connection string for working at work
-            services.AddDbContextPool<SMPDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("WorkConnection")));
+            //services.AddDbContextPool<SMPDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("WorkConnection")));
 
             //Uses connection string for working at home
-            //services.AddDbContextPool<SMPDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("HomeConnection")));
+            services.AddDbContextPool<SMPDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("HomeConnection")));
 
             services.ConfigureApplicationCookie(options =>
             {

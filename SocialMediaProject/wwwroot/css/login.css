@@ -10,6 +10,7 @@
     bottom: 0;
     margin: auto;
     min-width: 300px;
+    max-width: 500px;
     width: 25%;
     height: 50%;
 }
