@@ -14,7 +14,7 @@
     height: 50%;
 }
 
-.login-form {
+.login-form-container {
     background-color: white;
     display: block;
     border-style: solid;
@@ -32,7 +32,7 @@
     color: white;
 }
 
-.login-submit-btn {
+.login-btn {
     width: 50%;
     min-width: 150px;
 }
