@@ -1,10 +1,24 @@
-﻿@{
+﻿@model List<SocialMediaProject.Areas.Home.Models.PostViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/timeline.css" />
 }
 
 <div class="text-center">
     <h1>Timeline</h1>
     <h4>Username: @User.Identity.Name</h4>
     <h4>User ID: @User.FindFirst("UserID").Value</h4>
+
+    @foreach (var post in Model)
+    {
+        <div class="post-container">
+            <h4>User: @post.User</h4>
+            <h4>Contents: @post.Contents</h4>
+        </div>
+    }
 </div>

@@ -36,6 +36,18 @@ namespace SocialMediaProject.Data
                 Salt = salt,
                 Role = "User"
             });
+            context.SaveChanges();
+
+            context.Posts.Add(new Post
+            {
+                UserID = 2,
+                Contents = "TEST"
+            });
+            context.Posts.Add(new Post
+            {
+                UserID = 2,
+                Contents = "TEST2"
+            });
 
             context.SaveChanges();
         }

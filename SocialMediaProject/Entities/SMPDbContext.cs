@@ -10,5 +10,6 @@ namespace SocialMediaProject.Entities
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
     }
 }

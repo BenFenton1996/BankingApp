@@ -10,19 +10,19 @@ namespace SocialMediaProject.Utilities
 
     public class SMPContext : ISMPContext
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-        public SMPContext(IHttpContextAccessor httpContextAccessor)
+        private readonly IHttpContextAccessor HttpContextAccessor;
+        public SMPContext(IHttpContextAccessor HttpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
+            this.HttpContextAccessor = HttpContextAccessor;
         }
 
         public int GetUserID()
         {
-            return int.Parse(httpContextAccessor.HttpContext.User?.FindFirst("UserID").Value);
+            return int.Parse(HttpContextAccessor.HttpContext.User?.FindFirst("UserID").Value);
         }
         public string GetUsername()
         {
-            return httpContextAccessor.HttpContext.User?.Identity.Name;
+            return HttpContextAccessor.HttpContext.User?.Identity.Name;
         }
     }
 }
