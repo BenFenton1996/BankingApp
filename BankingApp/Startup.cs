@@ -55,6 +55,7 @@ namespace BankingApp
             services.AddHttpContextAccessor();
             services.AddScoped<IBankingAppContext, BankingAppContext>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IBankAccountsService, BankAccountsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

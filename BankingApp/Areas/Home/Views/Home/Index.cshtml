@@ -1,14 +1,50 @@
-﻿@{
+﻿@model List<BankingApp.Areas.Home.Models.BankAccountViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles {
-
+    <link rel="stylesheet" href="~/css/home.css" />
 }
 
 <div class="text-center">
-    <h1>Home</h1>
-    <h4>Username: @User.Identity.Name</h4>
-    <h4>User ID: @User.FindFirst("UserID").Value</h4>
+    <h1>Your Accounts</h1>
+
+    @foreach (var bankAccount in Model)
+    {
+        <div class="bank-account-container">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Account Name</th>
+                        <th>Account Type</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@bankAccount.BankAccountID</td>
+                        <td>@bankAccount.AccountName</td>
+                        <td>@bankAccount.AccountType</td>
+
+                        @if (bankAccount.Balance > 0)
+                        {
+                            <td class="text-success">@bankAccount.Balance</td>
+                        }
+                        else if (bankAccount.Balance < 0)
+                        {
+                            <td class="text-danger">@bankAccount.Balance</td>
+                        }
+                        else if (bankAccount.Balance == 0)
+                        {
+                            <td>@bankAccount.Balance</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

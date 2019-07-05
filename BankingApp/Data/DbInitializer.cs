@@ -10,33 +10,51 @@ namespace BankingApp.Data
         {
             context.Database.EnsureCreated();
 
-            //If table already exists and is populated then return
-            if (context.Users.Any())
+            //If User table is empty then seed with some test data
+            if (!context.Users.Any())
             {
-                return;
+                //Seed the table with some test values
+                var salt = Utilities.BankingAppHash.GenerateSalt();
+                context.Users.Add(new User
+                {
+                    Username = "Admin",
+                    Email = "Admin@BankingApp.com",
+                    Password = Utilities.BankingAppHash.HashText("SuperPassword", salt),
+                    Salt = salt,
+                    Role = "Administrator"
+                });
+
+                salt = Utilities.BankingAppHash.GenerateSalt();
+                context.Users.Add(new User
+                {
+                    Username = "Test",
+                    Email = "Test@BankingApp.com",
+                    Password = Utilities.BankingAppHash.HashText("Password", salt),
+                    Salt = salt,
+                    Role = "User"
+                });
+                context.SaveChanges();
             }
 
-            //Seed the table with some test values
-            var salt = Utilities.BankingAppHash.GenerateSalt();
-            context.Users.Add(new User
+            //If BankAccounts table is empty then seed with some test data
+            if (!context.BankAccounts.Any())
             {
-                Username = "Admin",
-                Email = "Admin@BankingApp.com",
-                Password = Utilities.BankingAppHash.HashText("SuperPassword", salt),
-                Salt = salt,
-                Role = "Administrator"
-            });
-
-            salt = Utilities.BankingAppHash.GenerateSalt();
-            context.Users.Add(new User
-            {
-                Username = "Test",
-                Email = "Test@BankingApp.com",
-                Password = Utilities.BankingAppHash.HashText("Password", salt),
-                Salt = salt,
-                Role = "User"
-            });
-            context.SaveChanges();
+                context.BankAccounts.Add(new BankAccount
+                {
+                    AccountName = "Cash",
+                    AccountType = "Standard",
+                    Balance = -130.44M,
+                    UserID = 2
+                });
+                context.BankAccounts.Add(new BankAccount
+                {
+                    AccountName = "Savings",
+                    AccountType = "Savings Builder",
+                    Balance = 1422.02M,
+                    UserID = 2
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
