@@ -2,7 +2,7 @@
 //Checks to make sure that ALL form inputs are populated
 //If ANY are empty adds is-invalid class to them and prevents form submission
 function checkAllFormInputs(form, event) {
-    form.filter("input[type=text], input[type=password], input[type=email]").each(function () {
+    form.filter(":input").each(function () {
         if (this.value === "") {
             event.preventDefault();
             this.classList.add("is-invalid");

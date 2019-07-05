@@ -7,6 +7,6 @@
     });
 
     //Adds styling for inputs that shouldn't be empty
-    addInputRequiredStyling($("#login-form *").filter("input[type=text], input[type=password], input[type=email]"));
-    addInputRequiredStyling($("#signup-form *").filter("input[type=text], input[type=password], input[type=email]"));
+    addInputRequiredStyling($("#login-form *").filter(":input"));
+    addInputRequiredStyling($("#signup-form *").filter(":input"));
 });

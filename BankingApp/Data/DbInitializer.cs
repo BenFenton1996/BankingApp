@@ -53,6 +53,13 @@ namespace BankingApp.Data
                     Balance = 1422.02M,
                     UserID = 2
                 });
+                context.BankAccounts.Add(new BankAccount
+                {
+                    AccountName = "Emergency Money",
+                    AccountType = "Savings Builder",
+                    Balance = 0M,
+                    UserID = 2
+                });
                 context.SaveChanges();
             }
         }

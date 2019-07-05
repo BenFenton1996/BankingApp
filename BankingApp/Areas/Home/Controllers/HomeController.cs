@@ -19,6 +19,7 @@ namespace BankingApp.Controllers
             this.BankAccountsService = BankAccountsService;
         }
 
+        [HttpGet]
         public ViewResult Index()
         {
             var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
@@ -37,9 +38,24 @@ namespace BankingApp.Controllers
             return View(bankAccountViewModels);
         }
 
+        [HttpGet]
         public ViewResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        public RedirectToActionResult Transfer(TransferViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                BankAccountsService.TransferMoneyBetweenAccounts(
+                    viewModel.AmountToTransfer, 
+                    viewModel.SenderID, 
+                    viewModel.RecipientID);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

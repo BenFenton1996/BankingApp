@@ -80,12 +80,12 @@ namespace BankingApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Login}/{action=LoginStageOne}/{id?}");
+                   name: "areaRoute",
+                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
-                    name: "areaRoute",
-                    template: "{area:Exists}/{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    template: "{controller=Login}/{action=LoginStageOne}/{id?}");               
             });
         }
     }
