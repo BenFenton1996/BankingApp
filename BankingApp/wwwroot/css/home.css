@@ -9,11 +9,29 @@
     bottom: 0;
     margin: auto;
     min-width: 300px;
-    max-width: 800px;
+    max-width: 500px;
     padding: 10px;
 }
 
-.transfer-container {
+    .bank-account-container h4 {
+        letter-spacing: 2px;
+    }
+
+.bank-account-top {
+    background-color: white;
+    padding: 10px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.bank-account-bottom {
+    background-color: #6378a6;
+    padding: 10px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.quick-transfer-container {
     display: block;
     left: 0;
     right: 0;
@@ -21,21 +39,11 @@
     bottom: 0;
     margin: auto;
     min-width: 300px;
-    max-width: 800px;
+    max-width: 500px;
     padding: 10px;
     background-color: white;
     border-style: solid;
     border-width: 2px;
     border-color: #f2f2f2;
     padding: 15px;
-}
-
-
-hr {
-    border: 0;
-    height: 0;
-    border-top: 1px solid rgb(255, 255, 255);
-    border-bottom: 1px solid rgb(255, 255, 255);
-    min-width: 300px;
-    max-width: 800px;
 }

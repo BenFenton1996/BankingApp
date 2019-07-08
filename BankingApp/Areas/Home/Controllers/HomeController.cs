@@ -45,17 +45,23 @@ namespace BankingApp.Controllers
         }
 
         [HttpPost]
-        public RedirectToActionResult Transfer(TransferViewModel viewModel)
+        public bool Transfer(TransferViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            var transactionStatus = false;
+            if (ModelState.IsValid && viewModel.AmountToTransfer <= 10000 && viewModel.SenderID != viewModel.RecipientID)
             {
-                BankAccountsService.TransferMoneyBetweenAccounts(
-                    viewModel.AmountToTransfer, 
-                    viewModel.SenderID, 
+                transactionStatus = BankAccountsService.TransferMoneyBetweenAccounts(
+                    viewModel.AmountToTransfer,
+                    viewModel.SenderID,
                     viewModel.RecipientID);
+
+                if (transactionStatus == false)
+                {
+                    ModelState.AddModelError("Funds", "Insufficient Funds");
+                }
             }
 
-            return RedirectToAction("Index");
+            return transactionStatus;
         }
     }
 }
