@@ -31,12 +31,12 @@ namespace BankingApp
             });
 
             //Uses connection string for working at work
-            services.AddDbContextPool<BankingAppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("WorkConnection")));
+            //services.AddDbContextPool<BankingAppDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("WorkConnection")));
 
             //Uses connection string for working at home
-            //services.AddDbContextPool<BankingAppDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("HomeConnection")));
+            services.AddDbContextPool<BankingAppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("HomeConnection")));
 
             services.ConfigureApplicationCookie(options =>
             {
