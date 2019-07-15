@@ -22,20 +22,7 @@ namespace BankingApp.Controllers
         [HttpGet]
         public ViewResult Index()
         {
-            var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
-            var bankAccountViewModels = new List<BankAccountViewModel>();
-            foreach (var bankAccount in bankAccountEntities)
-            {
-                bankAccountViewModels.Add(new BankAccountViewModel
-                {
-                    BankAccountID = bankAccount.BankAccountID,
-                    Balance = bankAccount.Balance,
-                    AccountName = bankAccount.AccountName,
-                    AccountType = bankAccount.AccountType
-                });
-            }
-
-            return View(bankAccountViewModels);
+            return View(GetBankAccountDetails());
         }
 
         [HttpGet]
@@ -62,6 +49,34 @@ namespace BankingApp.Controllers
             }
 
             return transactionStatus;
+        }
+
+        [HttpGet]
+        public PartialViewResult BankAccountsPartial()
+        {
+            return PartialView(GetBankAccountDetails());
+        }
+
+        /// <summary>
+        /// Gets all bank accounts for the current user and uses them to populate and return a list of BankAccountViewModels
+        /// </summary>
+        /// <returns>A List of BankAccountViewModels containing the details of all bank accounts for the current user</returns>
+        private List<BankAccountViewModel> GetBankAccountDetails()
+        {
+            var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
+            var bankAccountViewModels = new List<BankAccountViewModel>();
+            foreach (var bankAccount in bankAccountEntities)
+            {
+                bankAccountViewModels.Add(new BankAccountViewModel
+                {
+                    BankAccountID = bankAccount.BankAccountID,
+                    Balance = bankAccount.Balance,
+                    AccountName = bankAccount.AccountName,
+                    AccountType = bankAccount.AccountType
+                });
+            }
+
+            return bankAccountViewModels;
         }
     }
 }

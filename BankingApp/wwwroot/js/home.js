@@ -24,6 +24,26 @@
                     //If the transaction was successful, remove the hidden attribute from the success message and add it to the failure message
                     $("#transfer-success-message").prop("hidden", false);
                     $("#transfer-failure-message").prop("hidden", true);
+
+                    //Reset quick transfer form
+                    $("#AmountToTransfer").val("");
+
+                    SenderIdElement = $("#SenderID");                   
+                    SenderIdElement.val("");
+                    SenderIdElement.prop("disabled", true);
+
+                    recipientIdElement = $("#RecipientID");
+                    recipientIdElement.val("");
+                    recipientIdElement.prop("disabled", true);
+
+                    //Refresh the list of bank accounts to show the user's updated balance
+                    $.ajax({
+                        type: "GET",
+                        url: "/Home/Home/BankAccountsPartial",
+                        success: function (response) {
+                            $("#bank-accounts").html(response);
+                        }
+                    });
                 }
                 else {
                     //If the transaction failed, remove the hidden attribute from the failure message and add it to the success message
@@ -31,7 +51,7 @@
                     $("#transfer-failure-message").prop("hidden", false);
                 }
             }
-        })
+        });
     });
     addInputRequiredStyling($("#SenderID"));
     addInputRequiredStyling($("#RecipientID"));

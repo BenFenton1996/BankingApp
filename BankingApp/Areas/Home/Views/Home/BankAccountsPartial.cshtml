@@ -1,0 +1,34 @@
+﻿@model List<BankingApp.Areas.Home.Models.BankAccountViewModel>
+
+@{
+    Layout = null;
+}
+
+@foreach (var bankAccount in Model)
+{
+    <div class="bank-account-container mt-2">
+        <div class="bank-account-top">
+            <div class="mb-4">
+                <small class="float-left">@bankAccount.BankAccountID - @bankAccount.AccountName</small>
+                <small class="float-right">@bankAccount.AccountType</small>
+            </div>
+
+            @if (bankAccount.Balance > 0)
+            {
+                <h4 class="text-success">£@bankAccount.Balance</h4>
+            }
+            else if (bankAccount.Balance < 0)
+            {
+                <h4 class="text-danger">£@bankAccount.Balance</h4>
+            }
+            else if (bankAccount.Balance == 0)
+            {
+                <h4>£@bankAccount.Balance</h4>
+            }
+        </div>
+
+        <div class="bank-account-bottom text-white">
+            <h4>MORE STUFF HERE</h4>
+        </div>
+    </div>
+}
