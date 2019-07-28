@@ -2,8 +2,8 @@
     //Add is-invalid class to inputs and prevent form submission if required inputs in quick transfer are empty
     $("#quick-transfer-form").on("submit", function (e) {
         e.preventDefault();
-        senderId = $("#SenderID");
-        recipientId = $("#RecipientID");
+        senderId = $("#sender-id");
+        recipientId = $("#recipient-id");
         if (senderId.val() === "") {
             senderId.addClass("is-invalid");
         }
@@ -26,24 +26,17 @@
                     $("#transfer-failure-message").prop("hidden", true);
 
                     //Reset quick transfer form
-                    $("#AmountToTransfer").val("");
+                    $("#amount-to-transfer").val("");
 
-                    SenderIdElement = $("#SenderID");                   
+                    SenderIdElement = $("#sender-id");                   
                     SenderIdElement.val("");
                     SenderIdElement.prop("disabled", true);
 
-                    recipientIdElement = $("#RecipientID");
+                    recipientIdElement = $("#recipient-id");
                     recipientIdElement.val("");
                     recipientIdElement.prop("disabled", true);
 
-                    //Refresh the list of bank accounts to show the user's updated balance
-                    $.ajax({
-                        type: "GET",
-                        url: "/Home/Home/BankAccountsPartial",
-                        success: function (response) {
-                            $("#bank-accounts").html(response);
-                        }
-                    });
+                    RefreshBankAccounts();
                 }
                 else {
                     //If the transaction failed, remove the hidden attribute from the failure message and add it to the success message
@@ -53,30 +46,44 @@
             }
         });
     });
-    addInputRequiredStyling($("#SenderID"));
-    addInputRequiredStyling($("#RecipientID"));
+    addInputRequiredStyling($("#sender-id"));
+    addInputRequiredStyling($("#recipient-id"));
 
     //Disable inputs in quick transfer if the previous required input(s) are empty
-    $("#AmountToTransfer").on("keyup", function (e) {
+    $("#amount-to-transfer").on("keyup", function (e) {
         if (e.target.value !== "") {
-            $("#SenderID").prop("disabled", false);
-            let recipientElement = $("#RecipientID");
+            $("#sender-id").prop("disabled", false);
+            let recipientElement = $("#recipient-id");
             if (recipientElement.val() !== "") {
                 recipientElement.prop("disabled", false);
             }
         }
         else {
-            $("#SenderID").prop("disabled", true);
-            $("#RecipientID").prop("disabled", true);
+            $("#sender-id").prop("disabled", true);
+            $("#recipient-id").prop("disabled", true);
         }
     });
-    $("#SenderID").on("change", function (e) {
+    $("#sender-id").on("change", function (e) {
         if (e.target.value !== "") {
-            $("#RecipientID").prop("disabled", false);
+            $("#recipient-id").prop("disabled", false);
         }
         else {
-            $("#RecipientID").prop("disabled", true);
+            $("#recipient-id").prop("disabled", true);
         }
     });
-    //Validation for Quick Transfer END -------------------
+
+    $("#refresh-bank-accounts-btn").on("click", function (e) {
+        RefreshBankAccounts();
+    });
 });
+
+//Refresh the list of bank accounts to show the user's updated balance
+function RefreshBankAccounts() {    
+    $.ajax({
+        type: "GET",
+        url: "/Home/Home/BankAccountsPartial",
+        success: function (response) {
+            $("#bank-accounts").html(response);
+        }
+    });
+}

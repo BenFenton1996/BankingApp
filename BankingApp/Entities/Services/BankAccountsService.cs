@@ -1,4 +1,5 @@
 ﻿using BankingApp.Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,13 @@ namespace BankingApp.Entities.Services
         /// <param name="recipientID">The ID of the bank account recieving funds</param>
         /// <returns>True if the sender had the funds for the transfer, otherwise returns false</returns>
         bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID);
+
+        /// <summary>
+        /// Gets the 5 most recent transfers for a given bank account and returns them in a list
+        /// </summary>
+        /// <param name="accountId">The ID of the bank account to get recent transfers for</param>
+        /// <returns>The 5 most recent rows in BankTransferLogs ordered by TransferDate descending in a List</returns>
+        List<BankTransferLog> GetRecentTransfersForAccount(int accountId);
     }
 
     public class BankAccountsService : IBankAccountsService
@@ -47,12 +55,32 @@ namespace BankingApp.Entities.Services
                 var recipientAccount = context.BankAccounts.FirstOrDefault(ba => ba.BankAccountID == recipientID);
                 recipientAccount.Balance += amountToTransfer;
                 context.SaveChanges();
+
+                //Log the details of the bank transfer
+                context.BankTransferLogs.Add(new BankTransferLog
+                {
+                    AmountTransferred = amountToTransfer,
+                    SenderID = senderID,
+                    RecipientID = recipientID,
+                    TransferDate = DateTime.Now
+                });
+                context.SaveChanges();
+
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        public List<BankTransferLog> GetRecentTransfersForAccount(int accountId)
+        {
+            return context.BankTransferLogs
+                .Where(btl => btl.RecipientID == accountId || btl.SenderID == accountId)
+                .OrderByDescending(bt1 => bt1.TransferDate)
+                .Take(5)
+                .ToList();
         }
     }
 }

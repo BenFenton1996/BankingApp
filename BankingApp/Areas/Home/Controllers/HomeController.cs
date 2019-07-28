@@ -67,12 +67,19 @@ namespace BankingApp.Controllers
             var bankAccountViewModels = new List<BankAccountViewModel>();
             foreach (var bankAccount in bankAccountEntities)
             {
+                var transferLogs = BankAccountsService.GetRecentTransfersForAccount(bankAccount.BankAccountID);
+                var transferLogViewModels = new List<TransferLogViewModel>();
+                foreach (var transferLog in transferLogs)
+                {
+                    transferLogViewModels.Add(new TransferLogViewModel(transferLog));
+                }
                 bankAccountViewModels.Add(new BankAccountViewModel
                 {
                     BankAccountID = bankAccount.BankAccountID,
                     Balance = bankAccount.Balance,
                     AccountName = bankAccount.AccountName,
-                    AccountType = bankAccount.AccountType
+                    AccountType = bankAccount.AccountType,
+                    RecentTransfers = transferLogViewModels
                 });
             }
 

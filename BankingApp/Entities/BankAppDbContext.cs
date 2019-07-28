@@ -11,5 +11,6 @@ namespace BankingApp.Entities
 
         public DbSet<User> Users { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<BankTransferLog> BankTransferLogs { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BankingApp.Entities;
 using BankingApp.Entities.Models;
+using System;
 using System.Linq;
 
 namespace BankingApp.Data
@@ -59,6 +60,33 @@ namespace BankingApp.Data
                     AccountType = "Savings Builder",
                     Balance = 0M,
                     UserID = 2
+                });
+                context.SaveChanges();
+            }
+
+            //If BankTransferLog table table is empty then seed with some test data
+            if (!context.BankTransferLogs.Any())
+            {
+                context.BankTransferLogs.Add(new BankTransferLog
+                {
+                    SenderID = 1,
+                    RecipientID = 2,
+                    TransferDate = DateTime.Now,
+                    AmountTransferred = 144.02M                   
+                });
+                context.BankTransferLogs.Add(new BankTransferLog
+                {
+                    SenderID = 2,
+                    RecipientID = 1,
+                    TransferDate = DateTime.Now,
+                    AmountTransferred = 50.10M
+                });
+                context.BankTransferLogs.Add(new BankTransferLog
+                {
+                    SenderID = 3,
+                    RecipientID = 2,
+                    TransferDate = DateTime.Now,
+                    AmountTransferred = 100.00M
                 });
                 context.SaveChanges();
             }

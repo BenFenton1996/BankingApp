@@ -27,8 +27,29 @@
             }
         </div>
 
-        <div class="bank-account-bottom text-white">
-            <h4>MORE STUFF HERE</h4>
+        <div class="bank-account-bottom text-white text-center">
+            <table class="table table-borderless text-white">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var transferLog in bankAccount.RecentTransfers)
+                    {
+                        <tr>
+                            <td>@transferLog.TransferDate</td>
+                            <td>@transferLog.SenderID</td>
+                            <td>@transferLog.RecipientID</td>
+                            <td>@transferLog.AmountTransferred</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 }
