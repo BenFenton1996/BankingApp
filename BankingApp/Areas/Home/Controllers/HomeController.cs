@@ -19,18 +19,32 @@ namespace BankingApp.Controllers
             this.BankAccountsService = BankAccountsService;
         }
 
+        /// <summary>
+        /// Returns the Home Index page, populated with details from bank accounts and recent transactions
+        /// Includes a form for doing quick transactions between the current user's accounts
+        /// </summary>
+        /// <returns>The Home Index page with a ViewModel populated with details from bank accounts and recent transactions</returns>
         [HttpGet]
         public ViewResult Index()
         {
             return View(GetBankAccountDetails());
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns>Privacy View for viewing the privacy policy and changing privacy settings</returns>
         [HttpGet]
         public ViewResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public bool Transfer(TransferViewModel viewModel)
         {
@@ -51,6 +65,10 @@ namespace BankingApp.Controllers
             return transactionStatus;
         }
 
+        /// <summary>
+        /// Returns a partial view for bank details populated with account details and recent transactions
+        /// </summary>
+        /// <returns>The BankAccountsPartial View with a ViewModel populated with account details and recent transactions</returns>
         [HttpGet]
         public PartialViewResult BankAccountsPartial()
         {
