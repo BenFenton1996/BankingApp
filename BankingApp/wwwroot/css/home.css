@@ -18,14 +18,14 @@
     }
 
 .bank-account-top {
-    background-color: white;
+    background-color: #6378a6;
     padding: 10px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
 
 .bank-account-bottom {
-    background-color: #6378a6;
+    background-color: white;
     padding: 10px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;

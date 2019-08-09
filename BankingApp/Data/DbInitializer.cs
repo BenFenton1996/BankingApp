@@ -72,21 +72,24 @@ namespace BankingApp.Data
                     SenderID = 1,
                     RecipientID = 2,
                     TransferDate = DateTime.Now,
-                    AmountTransferred = 144.02M                   
+                    AmountTransferred = 144.02M,
+                    TransactionType = "Transfer"
                 });
                 context.BankTransferLogs.Add(new BankTransferLog
                 {
                     SenderID = 2,
                     RecipientID = 1,
                     TransferDate = DateTime.Now,
-                    AmountTransferred = 50.10M
+                    AmountTransferred = 50.10M,
+                    TransactionType = "Transfer"
                 });
                 context.BankTransferLogs.Add(new BankTransferLog
                 {
                     SenderID = 3,
                     RecipientID = 2,
                     TransferDate = DateTime.Now,
-                    AmountTransferred = 100.00M
+                    AmountTransferred = 100.00M,
+                    TransactionType = "Transfer"
                 });
                 context.SaveChanges();
             }

@@ -5,17 +5,17 @@ namespace BankingApp.Areas.Home.Models
 {
     public class TransferLogViewModel
     {
-        public TransferLogViewModel(BankTransferLog TransferLog)
+        public TransferLogViewModel(BankTransferLog TransferLog, string description)
         {
             TransferDate = TransferLog.TransferDate;
             AmountTransferred = TransferLog.AmountTransferred;
-            SenderID = TransferLog.SenderID;
-            RecipientID = TransferLog.RecipientID;
+            Description = description;
+            TransactionType = TransferLog.TransactionType;
         }
 
         public DateTime TransferDate { get; set; }
         public decimal AmountTransferred { get; set; }
-        public int SenderID { get; set; }
-        public int RecipientID { get; set; }
+        public string Description { get; set; }
+        public string TransactionType { get; set; }
     }
 }

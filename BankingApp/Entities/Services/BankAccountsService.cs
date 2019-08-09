@@ -20,8 +20,9 @@ namespace BankingApp.Entities.Services
         /// <param name="amountToTransfer">The amount of money to transfer</param>
         /// <param name="senderID">The ID of the bank account sending funds</param>
         /// <param name="recipientID">The ID of the bank account recieving funds</param>
+        /// <param name="transactionType">The type of the transaction</param>
         /// <returns>True if the sender had the funds for the transfer, otherwise returns false</returns>
-        bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID);
+        bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID, string transactionType);
 
         /// <summary>
         /// Gets the 5 most recent transfers for a given bank account and returns them in a list
@@ -29,6 +30,13 @@ namespace BankingApp.Entities.Services
         /// <param name="accountId">The ID of the bank account to get recent transfers for</param>
         /// <returns>The 5 most recent rows in BankTransferLogs ordered by TransferDate descending in a List</returns>
         List<BankTransferLog> GetRecentTransfersForAccount(int accountId);
+
+        /// <summary>
+        /// Gets the account name of a bank account
+        /// </summary>
+        /// <param name="accountId">The ID of the bank account to get the name for</param>
+        /// <returns>The name of the first bank account with a matching ID as a string</returns>
+        string GetBankAccountName(int accountId);
     }
 
     public class BankAccountsService : IBankAccountsService
@@ -46,7 +54,7 @@ namespace BankingApp.Entities.Services
                 .ToList();
         }
 
-        public bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID)
+        public bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID, string transactionType)
         {
             var senderAccount = context.BankAccounts.FirstOrDefault(ba => ba.BankAccountID == senderID);
             if (senderAccount.Balance - amountToTransfer >= 0)
@@ -62,7 +70,8 @@ namespace BankingApp.Entities.Services
                     AmountTransferred = amountToTransfer,
                     SenderID = senderID,
                     RecipientID = recipientID,
-                    TransferDate = DateTime.Now
+                    TransferDate = DateTime.Now,
+                    TransactionType = transactionType
                 });
                 context.SaveChanges();
 
@@ -81,6 +90,14 @@ namespace BankingApp.Entities.Services
                 .OrderByDescending(bt1 => bt1.TransferDate)
                 .Take(5)
                 .ToList();
+        }
+
+        public string GetBankAccountName(int accountId)
+        {
+            return context.BankAccounts
+                .Where(ba => ba.BankAccountID == accountId)
+                .Select(ba => ba.AccountName)
+                .FirstOrDefault();
         }
     }
 }

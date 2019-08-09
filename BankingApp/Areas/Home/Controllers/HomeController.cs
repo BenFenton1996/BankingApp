@@ -41,10 +41,10 @@ namespace BankingApp.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Transfers money from one account to another
         /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
+        /// <param name="viewModel">Contains details of the transaction including sender, recpient and amount sent</param>
+        /// <returns>A boolean indicating whether or not the transaction succeeded</returns>
         [HttpPost]
         public bool Transfer(TransferViewModel viewModel)
         {
@@ -54,7 +54,8 @@ namespace BankingApp.Controllers
                 transactionStatus = BankAccountsService.TransferMoneyBetweenAccounts(
                     viewModel.AmountToTransfer,
                     viewModel.SenderID,
-                    viewModel.RecipientID);
+                    viewModel.RecipientID,
+                    "Transfer");
 
                 if (transactionStatus == false)
                 {
@@ -89,8 +90,19 @@ namespace BankingApp.Controllers
                 var transferLogViewModels = new List<TransferLogViewModel>();
                 foreach (var transferLog in transferLogs)
                 {
-                    transferLogViewModels.Add(new TransferLogViewModel(transferLog));
+                    //Check whether or not the current account in the loop was the sender or recipient of the money
+                    if (bankAccount.BankAccountID == transferLog.RecipientID)
+                    {
+                        string senderName = BankAccountsService.GetBankAccountName(transferLog.SenderID);
+                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, string.Format("FROM {0}", senderName)));
+                    }
+                    else
+                    {
+                        string recipientName = BankAccountsService.GetBankAccountName(transferLog.RecipientID);
+                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, string.Format("TO {0}", recipientName)));
+                    }
                 }
+
                 bankAccountViewModels.Add(new BankAccountViewModel
                 {
                     BankAccountID = bankAccount.BankAccountID,

@@ -21,5 +21,8 @@ namespace BankingApp.Entities.Models
 
         [Required]
         public int RecipientID { get; set; }
+
+        [Required]
+        public string TransactionType { get; set; }
     }
 }
