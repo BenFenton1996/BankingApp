@@ -10,6 +10,8 @@
 }
 
 <div class="justify-content-center">
+
+    <!-- Quick transfer start -->
     <form id="quick-transfer-form" action="@Url.Action("Transfer", "Home" )" method="post">
         @Html.AntiForgeryToken()
         <div class="quick-transfer-container">
@@ -59,7 +61,9 @@
             </div>
         </div>
     </form>
+    <!-- Quick transfer end -->
 
+    <!-- Display all bank accounts in here -->
     <div id="bank-accounts">
         @{
             await Html.RenderPartialAsync("BankAccountsPartial", Model);

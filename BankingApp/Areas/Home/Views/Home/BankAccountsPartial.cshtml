@@ -13,43 +13,45 @@
                 <small class="float-right">@bankAccount.AccountType</small>
             </div>
 
-            @if (bankAccount.Balance > 0)
+            @if (bankAccount.Balance >= 0)
             {
-                <h4 class="text-success">£@bankAccount.Balance</h4>
+                <h4 class="text-white">£@bankAccount.Balance</h4>
             }
-            else if (bankAccount.Balance < 0)
+            else
             {
-                <h4 class="text-danger">£@bankAccount.Balance</h4>
-            }
-            else if (bankAccount.Balance == 0)
-            {
-                <h4>£@bankAccount.Balance</h4>
+                <h4 class="text-black">£@bankAccount.Balance</h4>
             }
         </div>
 
-        <div class="bank-account-bottom text-white">
-            <table class="table table-borderless table-striped">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
+        <div class="bank-account-bottom">
+            <div class="text-center">
+                <i class="fa fa-arrow-down btn btn-link" onclick="ToggleAccountBottom(@bankAccount.BankAccountID)" role="button"></i>
+            </div>
 
-                <tbody>
-                    @foreach (var transferLog in bankAccount.RecentTransfers)
-                    {
+            <div id="account-@bankAccount.BankAccountID-bottom" hidden>
+                <table class="table table-borderless table-striped">
+                    <thead>
                         <tr>
-                            <td>@transferLog.TransferDate.ToString("dd MMM")</td>
-                            <td>@transferLog.Description</td>
-                            <td>@transferLog.TransactionType</td>
-                            <td>£@transferLog.AmountTransferred</td>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Amount</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var transferLog in bankAccount.RecentTransfers)
+                        {
+                            <tr>
+                                <td>@transferLog.TransferDate.ToString("dd MMM")</td>
+                                <td>@transferLog.Description</td>
+                                <td>@transferLog.TransactionType</td>
+                                <td>£@transferLog.AmountTransferred</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 }

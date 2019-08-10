@@ -28,7 +28,7 @@
                     //Reset quick transfer form
                     $("#amount-to-transfer").val("");
 
-                    SenderIdElement = $("#sender-id");                   
+                    SenderIdElement = $("#sender-id");
                     SenderIdElement.val("");
                     SenderIdElement.prop("disabled", true);
 
@@ -78,7 +78,7 @@
 });
 
 //Refresh the list of bank accounts to show the user's updated balance
-function RefreshBankAccounts() {    
+function RefreshBankAccounts() {
     $.ajax({
         type: "GET",
         url: "/Home/Home/BankAccountsPartial",
@@ -86,4 +86,15 @@ function RefreshBankAccounts() {
             $("#bank-accounts").html(response);
         }
     });
+}
+
+//Toggles the bottom section on bank accounts between visible and hidden
+function ToggleAccountBottom(accountId) {
+    let recentTransactions = $("#account-" + accountId + "-bottom");
+    if ($(recentTransactions).is(":visible")) {
+        recentTransactions.attr("hidden", true)
+    }
+    else {
+        recentTransactions.attr("hidden", false)
+    }
 }
