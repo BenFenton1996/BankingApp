@@ -62,6 +62,12 @@ body {
     background-color: white;
 }
 
+/* Misc
+-------------------------------------------------- */
+.cursor-pointer {
+    cursor: pointer;
+}
+
 /* Fixes page snapping to the right when opening a modal */
 /*.modal {
     overflow-y: auto;
