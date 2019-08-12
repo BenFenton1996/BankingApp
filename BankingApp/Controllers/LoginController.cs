@@ -76,6 +76,13 @@ namespace BankingApp
             return View(new LoginStageOneViewModel());
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public ViewResult SignUp()
+        {
+            return View();
+        }
+
         /// <summary>
         /// Recieves User details for a new account and passes them to a service which 
         /// checks them to make sure they don't match the details of an existing account. 
@@ -87,24 +94,23 @@ namespace BankingApp
         [HttpPost]
         public ViewResult SignUp(SignUpViewModel viewModel)
         {
-            bool accountCreated = false;
             if (ModelState.IsValid)
             {
-                if (!UsersService.CreateNewAccount(viewModel.NewUsername, viewModel.NewEmail, viewModel.NewPassword))
+                if (!UsersService.CreateNewAccount(viewModel.Username, viewModel.Email, viewModel.Password))
                 {
                     ModelState.AddModelError("AccountAlreadyExists", "Email or Username already in use.");
                 }
                 else
                 {
-                    ModelState.Clear();
-                    accountCreated = true;
-                }
+                    return View("LoginStageOne", new LoginStageOneViewModel
+                    {
+                        AccountCreated = true
+                    });
+                }               
             }
 
-            return View("LoginStageOne", new LoginStageOneViewModel
-            {
-                AccountCreated = accountCreated
-            });
+            viewModel.Password = "";
+            return View(viewModel);
         }
 
         /// <summary>

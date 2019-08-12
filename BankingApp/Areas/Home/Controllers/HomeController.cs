@@ -31,16 +31,6 @@ namespace BankingApp.Controllers
         }
 
         /// <summary>
-        /// TODO
-        /// </summary>
-        /// <returns>Privacy View for viewing the privacy policy and changing privacy settings</returns>
-        [HttpGet]
-        public ViewResult Privacy()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Transfers money from one account to another
         /// </summary>
         /// <param name="viewModel">Contains details of the transaction including sender, recpient and amount sent</param>
