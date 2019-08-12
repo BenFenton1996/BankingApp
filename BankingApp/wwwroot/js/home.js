@@ -90,11 +90,8 @@ function RefreshBankAccounts() {
 
 //Toggles the bottom section on bank accounts between visible and hidden
 function ToggleAccountBottom(accountId) {
-    let recentTransactions = $("#account-" + accountId + "-bottom");
-    if ($(recentTransactions).is(":visible")) {
-        recentTransactions.attr("hidden", true)
-    }
-    else {
-        recentTransactions.attr("hidden", false)
-    }
+    $("#account-" + accountId + "-bottom").slideToggle("slow");
+
+    //I like this but it's a bit whiplashy
+    //document.getElementById("account-" + accountId + "-bottom").scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
 }

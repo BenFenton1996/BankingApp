@@ -68,6 +68,10 @@ body {
     cursor: pointer;
 }
 
+.display-none{
+    display: none;
+}
+
 /* Fixes page snapping to the right when opening a modal */
 /*.modal {
     overflow-y: auto;
