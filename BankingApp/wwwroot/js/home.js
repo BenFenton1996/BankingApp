@@ -75,6 +75,10 @@
     $("#refresh-bank-accounts-btn").on("click", function (e) {
         RefreshBankAccounts();
     });
+
+    addInputRequiredStyling($("#AccountName"));
+    addInputRequiredStyling($("#AccountType"));
+    addInputRequiredStyling($("#initial-deposit"));
 });
 
 //Refresh the list of bank accounts to show the user's updated balance

@@ -29,32 +29,34 @@
             </div>
 
             <div class="display-none" id="account-@bankAccount.BankAccountID-bottom">
-                <table class="table table-borderless table-striped">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var transferLog in bankAccount.RecentTransfers)
-                        {
+                @if (bankAccount.RecentTransfers != null && bankAccount.RecentTransfers.Count() > 0)
+                {
+                    <table class="table table-borderless table-striped">
+                        <thead>
                             <tr>
-                                <td>@transferLog.TransferDate.ToString("dd MMM")</td>
-                                <td>@transferLog.TransactionType @transferLog.Description</td>
-                                <td>£@transferLog.AmountTransferred</td>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
 
-                <hr />
-
-                <div class="text-center">
-                    <input type="button" class="btn btn-primary" value="Pay" />
-                </div>
+                        <tbody>
+                            @foreach (var transferLog in bankAccount.RecentTransfers)
+                            {
+                                <tr>
+                                    <td>@transferLog.TransferDate.ToString("dd MMM")</td>
+                                    <td>@transferLog.TransactionType @transferLog.Description</td>
+                                    <td>£@transferLog.AmountTransferred</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h1>No transfers yet</h1>
+                    <h1>Delete button here</h1>
+                }
             </div>
         </div>
     </div>

@@ -67,6 +67,53 @@ namespace BankingApp.Controllers
         }
 
         /// <summary>
+        /// Returns a view for creating a new bank account for the current user
+        /// </summary>
+        /// <returns>View containing form with fields for creating a new bank account</returns>
+        [HttpGet]
+        public ViewResult CreateBankAccount()
+        {
+            var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
+            var bankAccountViewModels = new List<BankAccountViewModel>();
+            foreach (var bankAccount in bankAccountEntities)
+            {
+                bankAccountViewModels.Add(new BankAccountViewModel
+                {
+                    AccountName = bankAccount.AccountName,
+                    BankAccountID = bankAccount.BankAccountID
+                });
+            }
+
+            return View(new CreateBankAccountViewModel
+            {
+                BankAccounts = bankAccountViewModels
+            });
+        }
+
+        /// <summary>
+        /// Creates a new bank account using data from the view model if it is valid
+        /// If creation succeeds then redirect to the Index page of the Home controller, otherwise return the CreateBankAccount View with errors
+        /// </summary>
+        /// <param name="viewModel">The view model containing the data for the new bank account</param>
+        /// <returns>The CreateBankAccount view with errors if creation failed or return a redirect result to the Index page of the Home controller if it succeeded</returns>
+        [HttpPost]
+        public ActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (BankAccountsService.CreateBankAccount(BankingAppContext.GetUserID(), viewModel.AccountToDepositFromID, viewModel.AccountName, viewModel.AccountType, viewModel.InitialDeposit))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("CreationFailed", "Bank account creation failed");
+                }
+            }
+            return View(viewModel);
+        }
+
+        /// <summary>
         /// Gets all bank accounts for the current user and uses them to populate and return a list of BankAccountViewModels
         /// </summary>
         /// <returns>A List of BankAccountViewModels containing the details of all bank accounts for the current user</returns>

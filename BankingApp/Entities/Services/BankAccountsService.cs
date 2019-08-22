@@ -37,6 +37,16 @@ namespace BankingApp.Entities.Services
         /// <param name="accountId">The ID of the bank account to get the name for</param>
         /// <returns>The name of the first bank account with a matching ID as a string</returns>
         string GetBankAccountName(int accountId);
+
+        /// <summary>
+        /// Adds a new bank account to a user's account
+        /// </summary>
+        /// <param name="userId">The ID of the user to attach the new bank account to</param>
+        /// <param name="senderId">The ID of the bank account the initial deposit is to be transferred from</param>
+        /// <param name="accountName">The name of the new bank account</param>
+        /// <param name="accountType">The type of the bank account</param>
+        /// <param name="initialDeposit">The amount of money the bank account will be initialized with</param>
+        bool CreateBankAccount(int userId, int senderId, string accountName, string accountType, decimal initialDeposit);
     }
 
     public class BankAccountsService : IBankAccountsService
@@ -51,6 +61,7 @@ namespace BankingApp.Entities.Services
         {
             return context.BankAccounts
                 .Where(ba => ba.UserID == userId)
+                .OrderByDescending(ba => ba.BankAccountID)
                 .ToList();
         }
 
@@ -98,6 +109,48 @@ namespace BankingApp.Entities.Services
                 .Where(ba => ba.BankAccountID == accountId)
                 .Select(ba => ba.AccountName)
                 .FirstOrDefault();
+        }
+
+        public bool CreateBankAccount(int userId, int senderId, string accountName, string accountType, decimal initialDeposit)
+        {
+            //Make sure that an account with the requested name does not exist
+            //Make sure that the senderId belongs to one of the current user's bank accounts
+            //Make sure that the sender account has enough funds to complete the initial deposit
+            var senderAccount = context.BankAccounts.FirstOrDefault(ba => ba.BankAccountID == senderId);
+            if (context.BankAccounts.Any(ba => ba.AccountName == accountName && ba.UserID == userId) && context.BankAccounts.Any(ba => ba.BankAccountID == senderId) || senderAccount.Balance - initialDeposit < 0)
+            {
+                return false;
+            }
+
+            var newBankAccount = new BankAccount
+            {
+                UserID = userId,
+                AccountName = accountName,
+                AccountType = accountType,
+                Balance = 0
+            };
+            context.BankAccounts.Add(newBankAccount);
+            context.SaveChanges();
+
+            if (initialDeposit > 0)
+            {
+                //Transfer the initial deposit from the chosen sender account to the new account
+                senderAccount.Balance -= initialDeposit;
+                newBankAccount.Balance += initialDeposit;
+                context.SaveChanges();
+
+                //Log the details of the initial deposit
+                context.BankTransferLogs.Add(new BankTransferLog
+                {
+                    AmountTransferred = initialDeposit,
+                    SenderID = senderId,
+                    RecipientID = newBankAccount.BankAccountID,
+                    TransferDate = DateTime.Now,
+                    TransactionType = "INITIAL DEPOSIT"
+                });
+                context.SaveChanges();
+            }
+            return true;
         }
     }
 }

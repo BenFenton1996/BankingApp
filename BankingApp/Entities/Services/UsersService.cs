@@ -54,13 +54,26 @@ namespace BankingApp.Entities.Services
             if (!context.Users.Where(u => u.Username == Username || u.Email == Email).Any())
             {
                 byte[] salt = Utilities.BankingAppHash.GenerateSalt();
-                context.Users.Add(new User
+
+                var user = new User
                 {
                     Username = Username,
                     Email = Email,
                     Password = Utilities.BankingAppHash.HashText(Password, salt),
                     Salt = salt,
                     Role = "User"
+                };
+
+                context.Users.Add(user);
+                context.SaveChanges();
+
+                //Set up default bank account for ease of use when testing since this project is not intended for development
+                context.BankAccounts.Add(new BankAccount
+                {
+                    AccountName = "Default Account",
+                    AccountType = "Default",
+                    Balance = 1000M,
+                    UserID = user.UserID
                 });
                 context.SaveChanges();
                 return true;
