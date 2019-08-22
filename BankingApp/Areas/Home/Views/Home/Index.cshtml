@@ -12,57 +12,54 @@
 <div class="justify-content-center">
 
     <!-- Quick transfer start -->
-    <form id="quick-transfer-form" action="@Url.Action("Transfer", "Home" )" method="post">
+    <form id="quick-transfer-form" action="@Url.Action("Transfer", "Home" )" class="quick-transfer-container" method="post">
         @Html.AntiForgeryToken()
-        <div class="quick-transfer-container">
-            <h4 class="text-center">Quick Transfer</h4>
+        <h4 class="text-center">Quick Transfer</h4>
 
-            <!-- Quick Transfer Fields -->
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-fw fa-gbp"></i></span>
-                    </div>
-                    <input class="form-control" placeholder="Amount to transfer" type="number" step="0.01" min="1" max="10000" id="amount-to-transfer" name="AmountToTransfer" />
+        <!-- Quick Transfer Fields -->
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-fw fa-gbp"></i></span>
                 </div>
+                <input class="form-control" placeholder="Amount to transfer" type="number" step="0.01" min="1" max="10000" id="amount-to-transfer" name="AmountToTransfer" />
             </div>
-            <div class="form-group">
-                <select disabled class="form-control select-required" id="sender-id" name="SenderID">
-                    <option value="" selected>Transfer from</option>
-                    @foreach (var bankAccount in Model)
-                    {
-                        <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <select disabled class="form-control select-required" id="recipient-id" name="RecipientID">
-                    <option value="" selected>Transfer to</option>
-                    @foreach (var bankAccount in Model)
-                    {
-                        <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
-                    }
-                </select>
-            </div>
-            <button id="refresh-bank-accounts-btn" class="btn btn-primary btn-block" type="submit">
-                <i class="fa fa-exchange"></i> Transfer
-            </button>
+        </div>
+        <div class="form-group">
+            <select disabled class="form-control select-required" id="sender-id" name="SenderID">
+                <option value="" selected>Transfer from</option>
+                @foreach (var bankAccount in Model)
+                {
+                    <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <select disabled class="form-control select-required" id="recipient-id" name="RecipientID">
+                <option value="" selected>Transfer to</option>
+                @foreach (var bankAccount in Model)
+                {
+                    <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
+                }
+            </select>
+        </div>
+        <button id="refresh-bank-accounts-btn" class="btn btn-primary btn-block" type="submit">
+            <i class="fa fa-exchange"></i> Transfer
+        </button>
 
-            <!-- Quick Transfer Success/Failure Messages -->
-            <div class="text-center">
-                <div id="transfer-success-message" hidden>
-                    <hr />
-                    <label class="text-success">Transaction Successful</label>
-                </div>
-                <div id="transfer-failure-message" hidden>
-                    <hr />
-                    <label class="text-danger">Transaction Failed</label>
-                </div>
+        <!-- Quick Transfer Success/Failure Messages -->
+        <div class="text-center">
+            <div id="transfer-success-message" hidden>
+                <hr />
+                <label class="text-success">Transaction Successful</label>
+            </div>
+            <div id="transfer-failure-message" hidden>
+                <hr />
+                <label class="text-danger">Transaction Failed</label>
             </div>
         </div>
     </form>
     <!-- Quick transfer end -->
-
     <!-- Display all bank accounts in here -->
     <div id="bank-accounts">
         @{
