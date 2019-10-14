@@ -23,6 +23,9 @@
             @Html.EditorFor(Model => Model.AccountType, new { htmlAttributes = new { @class = "form-control", placeholder = "Account Type" } })
         </div>
         <div class="form-group">
+            <input class="form-control" placeholder="Initial deposit" type="number" step="0.01" min="1" max="10000" id="initial-deposit" name="InitialDeposit" />
+        </div>
+        <div class="form-group">
             <select class="form-control select-required" id="sender-id" name="AccountToDepositFromID">
                 <option value="" selected>Transfer from</option>
                 @foreach (var bankAccount in Model.BankAccounts)
@@ -30,9 +33,6 @@
                     <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
                 }
             </select>
-        </div>
-        <div class="form-group">
-            <input class="form-control" placeholder="Initial deposit" type="number" step="0.01" min="1" max="10000" id="initial-deposit" name="InitialDeposit" />
         </div>
 
         <button class="btn btn-primary btn-block" type="submit">Submit</button>
