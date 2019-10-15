@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BankingApp.Utilities;
-using BankingApp.Entities.Services;
 using BankingApp.Areas.Home.Models;
 using System.Collections.Generic;
+using BankingApp.Entities.Services.Interfaces;
 
 namespace BankingApp.Controllers
 {

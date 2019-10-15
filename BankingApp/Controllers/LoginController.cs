@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BankingApp.Models;
 using BankingApp.Entities.Models;
-using BankingApp.Entities.Services;
+using BankingApp.Entities.Services.Interfaces;
 
 namespace BankingApp
 {
