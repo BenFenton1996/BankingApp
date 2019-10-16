@@ -10,6 +10,7 @@ using BankingApp.Entities;
 using BankingApp.Entities.Services;
 using BankingApp.Utilities;
 using BankingApp.Entities.Services.Interfaces;
+using Microsoft.Extensions.Hosting;
 
 namespace BankingApp
 {
@@ -51,7 +52,7 @@ namespace BankingApp
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddHttpContextAccessor();
             services.AddScoped<IBankingAppContext, BankingAppContext>();
@@ -60,7 +61,7 @@ namespace BankingApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -75,18 +76,19 @@ namespace BankingApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseCookiePolicy();         
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                   name: "areaRoute",
-                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Login}/{action=LoginStageOne}/{id?}");               
+                    pattern: "{controller=Login}/{action=LoginStageOne}/{id?}");
             });
         }
     }

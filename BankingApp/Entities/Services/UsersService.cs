@@ -19,8 +19,12 @@ namespace BankingApp.Entities.Services
 
         public User CheckUserDetails(string Email, string Password)
         {
+            var hashedPassword = Utilities.BankingAppHash.HashText(
+                Password, 
+                context.Users.Where(u => u.Email == Email).Select(u => u.Salt).FirstOrDefault());
+
             return context.Users
-                .FirstOrDefault(u => u.Email == Email && u.Password.SequenceEqual(Utilities.BankingAppHash.HashText(Password, u.Salt)));
+                .FirstOrDefault(u => u.Email == Email && u.Password == hashedPassword);
         }
 
         public bool CreateNewAccount(string Username, string Email, string Password)
@@ -28,7 +32,6 @@ namespace BankingApp.Entities.Services
             if (!context.Users.Where(u => u.Username == Username || u.Email == Email).Any())
             {
                 byte[] salt = Utilities.BankingAppHash.GenerateSalt();
-
                 var user = new User
                 {
                     Username = Username,
@@ -37,7 +40,6 @@ namespace BankingApp.Entities.Services
                     Salt = salt,
                     Role = "User"
                 };
-
                 context.Users.Add(user);
                 context.SaveChanges();
 
