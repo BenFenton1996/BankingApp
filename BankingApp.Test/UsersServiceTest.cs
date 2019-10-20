@@ -7,10 +7,10 @@ using System.Linq;
 namespace BankingApp.Test
 {
     [TestFixture]
-    class UsersServiceTest
+    internal class UsersServiceTest
     {
         [Test]
-        public void CreateReadUserTest()
+        public void CreateUserAndRead()
         {
             var options = new DbContextOptionsBuilder<BankingAppDbContext>()
                 .UseInMemoryDatabase(databaseName: "BankingAppTest")
@@ -25,7 +25,7 @@ namespace BankingApp.Test
 
             using (var context = new BankingAppDbContext(options))
             {
-                Assert.AreEqual(1, context.Users.Where(ba => ba.Username == "TestUsername").Count());
+                Assert.AreEqual(1, context.Users.Count(ba => ba.Username == "TestUsername"));
             }          
         }
     }

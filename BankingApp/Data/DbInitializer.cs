@@ -45,21 +45,21 @@ namespace BankingApp.Data
                     AccountName = "Cash",
                     AccountType = "Standard",
                     Balance = -130.44M,
-                    UserID = 2
+                    UserId = 2
                 });
                 context.BankAccounts.Add(new BankAccount
                 {
                     AccountName = "Savings",
                     AccountType = "Savings Builder",
                     Balance = 1422.02M,
-                    UserID = 2
+                    UserId = 2
                 });
                 context.BankAccounts.Add(new BankAccount
                 {
                     AccountName = "Emergency Money",
                     AccountType = "Savings Builder",
                     Balance = 0M,
-                    UserID = 2
+                    UserId = 2
                 });
                 context.SaveChanges();
             }
@@ -69,24 +69,24 @@ namespace BankingApp.Data
             {
                 context.BankTransferLogs.Add(new BankTransferLog
                 {
-                    SenderID = 1,
-                    RecipientID = 2,
+                    SenderId = 1,
+                    RecipientId = 2,
                     TransferDate = DateTime.Now,
                     AmountTransferred = 144.02M,
                     TransactionType = "Transfer"
                 });
                 context.BankTransferLogs.Add(new BankTransferLog
                 {
-                    SenderID = 2,
-                    RecipientID = 1,
+                    SenderId = 2,
+                    RecipientId = 1,
                     TransferDate = DateTime.Now,
                     AmountTransferred = 50.10M,
                     TransactionType = "Transfer"
                 });
                 context.BankTransferLogs.Add(new BankTransferLog
                 {
-                    SenderID = 3,
-                    RecipientID = 2,
+                    SenderId = 3,
+                    RecipientId = 2,
                     TransferDate = DateTime.Now,
                     AmountTransferred = 100.00M,
                     TransactionType = "Transfer"

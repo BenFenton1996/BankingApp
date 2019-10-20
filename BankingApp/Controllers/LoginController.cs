@@ -10,14 +10,14 @@ using BankingApp.Models;
 using BankingApp.Entities.Models;
 using BankingApp.Entities.Services.Interfaces;
 
-namespace BankingApp
+namespace BankingApp.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly IUsersService UsersService;
-        public LoginController(IUsersService UsersService)
+        private readonly IUsersService _usersService;
+        public LoginController(IUsersService usersService)
         {
-            this.UsersService = UsersService;
+            _usersService = usersService;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace BankingApp
         }
 
         /// <summary>
-        /// Recieves User details, validates them and logs the user in with those details if successful
+        /// Receives User details, validates them and logs the user in with those details if successful
         /// </summary>
         /// <param name="viewModel">The viewModel containing the user details to validate</param>
         /// <returns>Redirects to the Home View in the Home Area if successful, otherwise returns the LoginStageOne View</returns>
@@ -45,34 +45,33 @@ namespace BankingApp
         [HttpPost]
         public async Task<IActionResult> LoginStageOne(LoginStageOneViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                User currentUser = UsersService.CheckUserDetails(viewModel.Email, viewModel.Password);
-                if (currentUser != null)
-                {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, currentUser.Username),
-                        new Claim("UserID", currentUser.UserID.ToString()),
-                        new Claim(ClaimTypes.Role, currentUser.Role)
-                    };
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        AllowRefresh = true,
-                        IsPersistent = true,
-                        IssuedUtc = DateTime.Now
-                    };
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                    return RedirectToAction("Index", "Home", new { Area = "Home" });
-                }
-                else
-                {
-                    ModelState.AddModelError("Incorrect", "Email or Password are incorrect");
-                }
+                return View(new LoginStageOneViewModel());
             }
 
+            User currentUser = _usersService.CheckUserDetails(viewModel.Email, viewModel.Password);
+            if (currentUser != null)
+            {
+                var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, currentUser.Username),
+                        new Claim("UserId", currentUser.UserId.ToString()),
+                        new Claim(ClaimTypes.Role, currentUser.Role)
+                    };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true,
+                    IssuedUtc = DateTime.Now
+                };
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                return RedirectToAction("Index", "Home", new { Area = "Home" });
+            }
+
+            ModelState.AddModelError("Incorrect", "Email or Password are incorrect");
             return View(new LoginStageOneViewModel());
         }
 
@@ -84,7 +83,7 @@ namespace BankingApp
         }
 
         /// <summary>
-        /// Recieves User details for a new account and passes them to a service which 
+        /// Receives User details for a new account and passes them to a service which 
         /// checks them to make sure they don't match the details of an existing account. 
         /// If they don't, create a new account.
         /// </summary>
@@ -96,7 +95,7 @@ namespace BankingApp
         {
             if (ModelState.IsValid)
             {
-                if (!UsersService.CreateNewAccount(viewModel.Username, viewModel.Email, viewModel.Password))
+                if (!_usersService.CreateNewAccount(viewModel.Username, viewModel.Email, viewModel.Password))
                 {
                     ModelState.AddModelError("AccountAlreadyExists", "Email or Username already in use.");
                 }
@@ -106,7 +105,7 @@ namespace BankingApp
                     {
                         AccountCreated = true
                     });
-                }               
+                }
             }
 
             viewModel.Password = "";

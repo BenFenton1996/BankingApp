@@ -8,9 +8,9 @@ namespace BankingApp.Areas.Home.Models
         public decimal AmountToTransfer { get; set; }
 
         [Required]
-        public int SenderID { get; set; }
+        public int SenderId { get; set; }
 
         [Required]
-        public int RecipientID { get; set; }
+        public int RecipientId { get; set; }
     }
 }

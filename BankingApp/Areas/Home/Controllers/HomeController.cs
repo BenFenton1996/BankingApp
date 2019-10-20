@@ -5,18 +5,18 @@ using BankingApp.Areas.Home.Models;
 using System.Collections.Generic;
 using BankingApp.Entities.Services.Interfaces;
 
-namespace BankingApp.Controllers
+namespace BankingApp.Areas.Home.Controllers
 {
     [Area("Home")]
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IBankingAppContext BankingAppContext;
-        private readonly IBankAccountsService BankAccountsService;
-        public HomeController(IBankingAppContext BankingAppContext, IBankAccountsService BankAccountsService)
+        private readonly IBankingAppContext _bankingAppContext;
+        private readonly IBankAccountsService _bankAccountsService;
+        public HomeController(IBankingAppContext bankingAppContext, IBankAccountsService bankAccountsService)
         {
-            this.BankingAppContext = BankingAppContext;
-            this.BankAccountsService = BankAccountsService;
+            _bankingAppContext = bankingAppContext;
+            _bankAccountsService = bankAccountsService;
         }
 
         /// <summary>
@@ -33,26 +33,26 @@ namespace BankingApp.Controllers
         /// <summary>
         /// Transfers money from one account to another
         /// </summary>
-        /// <param name="viewModel">Contains details of the transaction including sender, recpient and amount sent</param>
+        /// <param name="viewModel">Contains details of the transaction including sender, recipient and amount sent</param>
         /// <returns>A boolean indicating whether or not the transaction succeeded</returns>
         [HttpPost]
         public bool Transfer(TransferViewModel viewModel)
         {
-            var transactionStatus = false;
-            if (ModelState.IsValid && viewModel.AmountToTransfer <= 10000 && viewModel.SenderID != viewModel.RecipientID)
+            if (!ModelState.IsValid || viewModel.AmountToTransfer > 10000 || viewModel.SenderId == viewModel.RecipientId)
             {
-                transactionStatus = BankAccountsService.TransferMoneyBetweenAccounts(
-                    viewModel.AmountToTransfer,
-                    viewModel.SenderID,
-                    viewModel.RecipientID,
-                    "Transfer");
-
-                if (transactionStatus == false)
-                {
-                    ModelState.AddModelError("Funds", "Insufficient Funds");
-                }
+                return false;
             }
 
+            var transactionStatus = _bankAccountsService.TransferMoneyBetweenAccounts(
+                    viewModel.AmountToTransfer,
+                    viewModel.SenderId,
+                    viewModel.RecipientId,
+                    "Transfer");
+
+            if (transactionStatus == false)
+            {
+                ModelState.AddModelError("Funds", "Insufficient Funds");
+            }
             return transactionStatus;
         }
 
@@ -73,14 +73,14 @@ namespace BankingApp.Controllers
         [HttpGet]
         public ViewResult CreateBankAccount()
         {
-            var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
+            var bankAccountEntities = _bankAccountsService.GetBankAccountsForUser(_bankingAppContext.GetUserId());
             var bankAccountViewModels = new List<BankAccountViewModel>();
             foreach (var bankAccount in bankAccountEntities)
             {
                 bankAccountViewModels.Add(new BankAccountViewModel
                 {
                     AccountName = bankAccount.AccountName,
-                    BankAccountID = bankAccount.BankAccountID
+                    BankAccountId = bankAccount.BankAccountId
                 });
             }
 
@@ -99,17 +99,12 @@ namespace BankingApp.Controllers
         [HttpPost]
         public ActionResult CreateBankAccount(CreateBankAccountViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid 
+                && _bankAccountsService.CreateBankAccount(_bankingAppContext.GetUserId(), viewModel.AccountToDepositFromId, viewModel.AccountName, viewModel.AccountType, viewModel.InitialDeposit))
             {
-                if (BankAccountsService.CreateBankAccount(BankingAppContext.GetUserID(), viewModel.AccountToDepositFromID, viewModel.AccountName, viewModel.AccountType, viewModel.InitialDeposit))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("CreationFailed", "Bank account creation failed");
-                }
+                return RedirectToAction("Index", "Home");
             }
+            ModelState.AddModelError("CreationFailed", "Bank account creation failed");
             return View(viewModel);
         }
 
@@ -119,30 +114,30 @@ namespace BankingApp.Controllers
         /// <returns>A List of BankAccountViewModels containing the details of all bank accounts for the current user</returns>
         private List<BankAccountViewModel> GetBankAccountDetails()
         {
-            var bankAccountEntities = BankAccountsService.GetBankAccountsForUser(BankingAppContext.GetUserID());
+            var bankAccountEntities = _bankAccountsService.GetBankAccountsForUser(_bankingAppContext.GetUserId());
             var bankAccountViewModels = new List<BankAccountViewModel>();
             foreach (var bankAccount in bankAccountEntities)
             {
-                var transferLogs = BankAccountsService.GetRecentTransfersForAccount(bankAccount.BankAccountID);
+                var transferLogs = _bankAccountsService.GetRecentTransfersForAccount(bankAccount.BankAccountId);
                 var transferLogViewModels = new List<TransferLogViewModel>();
                 foreach (var transferLog in transferLogs)
                 {
                     //Check whether or not the current account in the loop was the sender or recipient of the money
-                    if (bankAccount.BankAccountID == transferLog.RecipientID)
+                    if (bankAccount.BankAccountId == transferLog.RecipientId)
                     {
-                        string senderName = BankAccountsService.GetBankAccountName(transferLog.SenderID);
-                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, string.Format("FROM {0}", senderName)));
+                        string senderName = _bankAccountsService.GetBankAccountName(transferLog.SenderId);
+                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, $"FROM {senderName}"));
                     }
                     else
                     {
-                        string recipientName = BankAccountsService.GetBankAccountName(transferLog.RecipientID);
-                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, string.Format("TO {0}", recipientName)));
+                        string recipientName = _bankAccountsService.GetBankAccountName(transferLog.RecipientId);
+                        transferLogViewModels.Add(new TransferLogViewModel(transferLog, $"TO {recipientName}"));
                     }
                 }
 
                 bankAccountViewModels.Add(new BankAccountViewModel
                 {
-                    BankAccountID = bankAccount.BankAccountID,
+                    BankAccountId = bankAccount.BankAccountId,
                     Balance = bankAccount.Balance,
                     AccountName = bankAccount.AccountName,
                     AccountType = bankAccount.AccountType,

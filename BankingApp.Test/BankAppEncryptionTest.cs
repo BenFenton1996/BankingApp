@@ -3,13 +3,13 @@
 namespace BankingApp.Test
 {
     [TestFixture]
-    class BankAppEncryptionTest
+    internal class BankAppEncryptionTest
     {
         [Test]
         public void TestEncryption()
         {
-            string plainText = "TestString";
-            string cipherText = Utilities.BankingAppEncryption.EncryptString(plainText);
+            var plainText = "TestString";
+            var cipherText = Utilities.BankingAppEncryption.EncryptString(plainText);
             Assert.AreNotEqual(plainText, cipherText);
             Assert.AreEqual(44, cipherText.Length);
         }

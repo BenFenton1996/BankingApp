@@ -8,7 +8,7 @@ namespace BankingApp.Entities.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BankTransferLogID { get; set; }
+        public int BankTransferLogId { get; set; }
 
         [Required]
         public DateTime TransferDate { get; set; }
@@ -17,10 +17,10 @@ namespace BankingApp.Entities.Models
         public decimal AmountTransferred { get; set; }
 
         [Required]
-        public int SenderID { get; set; }
+        public int SenderId { get; set; }
 
         [Required]
-        public int RecipientID { get; set; }
+        public int RecipientId { get; set; }
 
         [Required]
         public string TransactionType { get; set; }

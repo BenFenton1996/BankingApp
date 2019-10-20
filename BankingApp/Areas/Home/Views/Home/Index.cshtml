@@ -32,7 +32,7 @@
                         <option value="" selected>Transfer from</option>
                         @foreach (var bankAccount in Model)
                         {
-                            <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
+                            <option value="@bankAccount.BankAccountId">@bankAccount.AccountName</option>
                         }
                     </select>
                 </div>
@@ -41,7 +41,7 @@
                         <option value="" selected>Transfer to</option>
                         @foreach (var bankAccount in Model)
                         {
-                            <option value="@bankAccount.BankAccountID">@bankAccount.AccountName</option>
+                            <option value="@bankAccount.BankAccountId">@bankAccount.AccountName</option>
                         }
                     </select>
                 </div>

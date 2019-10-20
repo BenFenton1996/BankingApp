@@ -16,7 +16,7 @@ namespace BankingApp.Areas.Home.Models
         public decimal InitialDeposit { get; set; }
 
         [Required]
-        public int AccountToDepositFromID { get; set; }
+        public int AccountToDepositFromId { get; set; }
 
         public List<BankAccountViewModel> BankAccounts { get; set; }
     }

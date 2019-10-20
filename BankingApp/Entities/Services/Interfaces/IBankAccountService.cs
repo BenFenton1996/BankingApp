@@ -16,11 +16,11 @@ namespace BankingApp.Entities.Services.Interfaces
         /// Transfers money between two accounts if the sender has the funds
         /// </summary>
         /// <param name="amountToTransfer">The amount of money to transfer</param>
-        /// <param name="senderID">The ID of the bank account sending funds</param>
-        /// <param name="recipientID">The ID of the bank account recieving funds</param>
+        /// <param name="senderId">The ID of the bank account sending funds</param>
+        /// <param name="recipientId">The ID of the bank account receiving funds</param>
         /// <param name="transactionType">The type of the transaction</param>
         /// <returns>True if the sender had the funds for the transfer, otherwise returns false</returns>
-        bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderID, int recipientID, string transactionType);
+        bool TransferMoneyBetweenAccounts(decimal amountToTransfer, int senderId, int recipientId, string transactionType);
 
         /// <summary>
         /// Gets the 5 most recent transfers for a given bank account and returns them in a list

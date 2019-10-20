@@ -3,61 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace BankingApp.Entities.Services
-{   
+{
     public class UsersService : Interfaces.IUsersService
     {
-        private readonly BankingAppDbContext context;
+        private readonly BankingAppDbContext _context;
         public UsersService(BankingAppDbContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public List<User> GetAllUsers()
         {
-            return context.Users.ToList();
+            return _context.Users.ToList();
         }
 
-        public User CheckUserDetails(string Email, string Password)
+        public User CheckUserDetails(string email, string password)
         {
             var hashedPassword = Utilities.BankingAppHash.HashText(
-                Password, 
-                context.Users.Where(u => u.Email == Email).Select(u => u.Salt).FirstOrDefault());
+                password,
+                _context.Users.Where(u => u.Email == email).Select(u => u.Salt).FirstOrDefault());
 
-            return context.Users
-                .FirstOrDefault(u => u.Email == Email && u.Password == hashedPassword);
+            return _context.Users
+                .FirstOrDefault(u => u.Email == email && u.Password == hashedPassword);
         }
 
-        public bool CreateNewAccount(string Username, string Email, string Password)
+        public bool CreateNewAccount(string username, string email, string password)
         {
-            if (!context.Users.Where(u => u.Username == Username || u.Email == Email).Any())
-            {
-                byte[] salt = Utilities.BankingAppHash.GenerateSalt();
-                var user = new User
-                {
-                    Username = Username,
-                    Email = Email,
-                    Password = Utilities.BankingAppHash.HashText(Password, salt),
-                    Salt = salt,
-                    Role = "User"
-                };
-                context.Users.Add(user);
-                context.SaveChanges();
-
-                //Set up default bank account for ease of use when testing since this project is not intended for development
-                context.BankAccounts.Add(new BankAccount
-                {
-                    AccountName = "Default Account",
-                    AccountType = "Default",
-                    Balance = 1000M,
-                    UserID = user.UserID
-                });
-                context.SaveChanges();
-                return true;
-            }
-            else
+            if (_context.Users.Any(u => u.Username == username || u.Email == email))
             {
                 return false;
             }
+
+            byte[] salt = Utilities.BankingAppHash.GenerateSalt();
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = Utilities.BankingAppHash.HashText(password, salt),
+                Salt = salt,
+                Role = "User"
+            };
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            //Set up default bank account for ease of use when testing since this project is not intended for development
+            _context.BankAccounts.Add(new BankAccount
+            {
+                AccountName = "Default Account",
+                AccountType = "Default",
+                Balance = 1000M,
+                UserId = user.UserId
+            });
+            _context.SaveChanges();
+            return true;
         }
     }
 }

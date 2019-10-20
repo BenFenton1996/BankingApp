@@ -8,7 +8,7 @@ namespace BankingApp.Entities.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [MaxLength(255)]

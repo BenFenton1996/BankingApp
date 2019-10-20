@@ -9,7 +9,7 @@
     <div class="bank-account-container">
         <div class="bank-account-top">
             <div class="mb-4 text-white">
-                <small class="float-left">@bankAccount.BankAccountID - @bankAccount.AccountName</small>
+                <small class="float-left">@bankAccount.BankAccountId - @bankAccount.AccountName</small>
                 <small class="float-right">@bankAccount.AccountType</small>
             </div>
 
@@ -25,11 +25,11 @@
 
         <div class="bank-account-bottom">
             <div class="text-center">
-                <i class="fa fa-arrow-down btn btn-link cursor-pointer" onclick="ToggleAccountBottom(@bankAccount.BankAccountID)" role="button"></i>
+                <i class="fa fa-arrow-down btn btn-link cursor-pointer" onclick="ToggleAccountBottom(@bankAccount.BankAccountId)" role="button"></i>
             </div>
 
-            <div class="display-none" id="account-@bankAccount.BankAccountID-bottom">
-                @if (bankAccount.RecentTransfers != null && bankAccount.RecentTransfers.Count() > 0)
+            <div class="display-none" id="account-@bankAccount.BankAccountId-bottom">
+                @if (bankAccount.RecentTransfers != null && bankAccount.RecentTransfers.Any())
                 {
                     <table class="table table-borderless table-striped">
                         <thead>

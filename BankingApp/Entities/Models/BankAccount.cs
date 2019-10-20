@@ -8,11 +8,11 @@ namespace BankingApp.Entities.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BankAccountID { get; set; }       
+        public int BankAccountId { get; set; }       
 
         [Required]
         [ForeignKey("User")]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
         [Required]
