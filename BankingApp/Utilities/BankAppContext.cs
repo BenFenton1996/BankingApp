@@ -2,24 +2,23 @@
 
 namespace BankingApp.Utilities
 {
-    public interface IBankingAppContext
-    {
-        string GetUsername();
-        int GetUserId();
-    }
-
-    public class BankingAppContext : IBankingAppContext
+    public class BankingAppContext : Interfaces.IBankingAppContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public BankingAppContext(IHttpContextAccessor HttpContextAccessor)
+        public BankingAppContext(IHttpContextAccessor httpContextAccessor)
         {
-            this._httpContextAccessor = HttpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public int GetUserId()
         {
-            return int.Parse(_httpContextAccessor.HttpContext.User?.FindFirst("UserID").Value);
+            if (int.TryParse(_httpContextAccessor.HttpContext.User?.FindFirst("UserID").Value, out int userId))
+            {
+                return userId;
+            }
+            return 0;
         }
+
         public string GetUsername()
         {
             return _httpContextAccessor.HttpContext.User?.Identity.Name;
