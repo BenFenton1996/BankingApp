@@ -2,8 +2,8 @@
     //Add is-invalid class to inputs and prevent form submission if required inputs in quick transfer are empty
     $("#quick-transfer-form").on("submit", function (e) {
         e.preventDefault();
-        senderId = $("#sender-id");
-        recipientId = $("#recipient-id");
+        var senderId = $("#sender-id");
+        var recipientId = $("#recipient-id");
         if (senderId.val() === "") {
             senderId.addClass("is-invalid");
         }
@@ -13,7 +13,7 @@
         }
         checkAllFormInputs($("#quick-transfer-form *"), e);
 
-        let quickTransferForm = $("#quick-transfer-form");
+        var quickTransferForm = $("#quick-transfer-form");
         $.ajax({
             type: "POST",
             url: quickTransferForm.attr("action"),
@@ -53,7 +53,7 @@
     $("#amount-to-transfer").on("keyup", function (e) {
         if (e.target.value !== "") {
             $("#sender-id").prop("disabled", false);
-            let recipientElement = $("#recipient-id");
+            var recipientElement = $("#recipient-id");
             if (recipientElement.val() !== "") {
                 recipientElement.prop("disabled", false);
             }

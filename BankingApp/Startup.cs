@@ -10,6 +10,7 @@ using BankingApp.Entities.Services;
 using BankingApp.Utilities;
 using BankingApp.Entities.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
+using BankingApp.Utilities.Interfaces;
 
 namespace BankingApp
 {
