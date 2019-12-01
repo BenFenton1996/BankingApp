@@ -3,7 +3,7 @@ using BankingApp.Entities.Models;
 using System;
 using System.Linq;
 
-namespace BankingApp.Data
+namespace BankingApp
 {
     public class DbInitializer
     {
